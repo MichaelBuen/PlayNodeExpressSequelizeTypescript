@@ -28,8 +28,8 @@ insert into country(country_name) values('CHN');
 
 insert into person(username, favorite_number, birth_country_id) values
 ('Linus', 69, 1),
-('Michael', 76, 2),
-('Bill', 55, 1);
+('Michael', 76, 1),
+('Bill', 55, 2);
 
 
 
