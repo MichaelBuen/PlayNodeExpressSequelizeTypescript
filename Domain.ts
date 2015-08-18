@@ -6,7 +6,8 @@ export interface IPerson
 {
     personId : number;
     userName : string;
-    favoriteNumber: number;    
+    favoriteNumber: number;
+    birthCountryId : number;    
     BirthCountry? : ICountry; // enable autocomplete
 }
 
@@ -35,7 +36,8 @@ export class Models {
         this._person = sequelize.define<IPerson, IPerson>('person', {
             personId : { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true, field: 'person_id' },
             userName : { type: Sequelize.STRING, field: 'username' },
-            favoriteNumber : { type: Sequelize.INTEGER, field: 'favorite_number' }             
+            favoriteNumber : { type: Sequelize.INTEGER, field: 'favorite_number' },
+            birthCountryId : { type: Sequelize.INTEGER, field: 'birth_country_id' }             
         }, {
             tableName : 'person'
         });

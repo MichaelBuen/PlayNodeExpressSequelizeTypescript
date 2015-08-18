@@ -14,8 +14,8 @@ var app = express();
 
 app.get('/api', (req, res) => {
      
-/*  
   
+ 
   models.getPersonModel().findAll().then(persons => res.send(persons));
    
   return;
@@ -44,7 +44,7 @@ app.get('/api', (req, res) => {
      
   return;   
 
-*/
+
      
   models.getPersonModel().findAll({
     include: [{ model: models.getCountryModel(), as : 'BirthCountry' } ]
@@ -57,11 +57,12 @@ app.get('/api', (req, res) => {
   var newPerson = models.getPersonModel().build({
     personId : 0,
     userName : 'Kel ' + uuid.v4(),
-    favoriteNumber : 76      
+    favoriteNumber : 84,
+    birthCountryId: 2      
   });
   
   var np : any = newPerson;
-  np.setBirthCountry(2);    
+      
   np.save();
   
 
