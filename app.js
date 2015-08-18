@@ -29,6 +29,7 @@ app.get('/api', function (req, res) {
     np.setBirthCountry(1);
     np.save();
 });
+// Serving static files
 // http://stackoverflow.com/questions/4720343/loading-basic-html-in-node-js
 // http://stackoverflow.com/questions/16593686/what-is-the-best-practice-for-serving-html-in-node-js-with-express-js
 app.use('/', express.static(__dirname + '/public'));
