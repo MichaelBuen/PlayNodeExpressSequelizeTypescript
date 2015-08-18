@@ -6,7 +6,6 @@ import Domain = require('./Domain');
 // Serving static files
 import path = require('path');
 
-
 var models = new Domain.Models();
 
 var app = express();
@@ -14,8 +13,7 @@ var app = express();
 
 app.get('/api', (req, res) => {
      
-  
-     
+      
   models.getPersonModel().findAll({
     include: [{ model: models.getCountryModel(), as : 'BirthCountry' }],
     attributes: ['personId', 'userName', 'favoriteNumber']
@@ -75,7 +73,8 @@ app.get('/api', (req, res) => {
 // Serving static files
 // http://stackoverflow.com/questions/4720343/loading-basic-html-in-node-js
 // http://stackoverflow.com/questions/16593686/what-is-the-best-practice-for-serving-html-in-node-js-with-express-js
-app.use('/', express.static(__dirname + '/public'));
+
+app.use('/', express.static(__dirname + '/public', { extensions: ['html'] }));
 
 
 
