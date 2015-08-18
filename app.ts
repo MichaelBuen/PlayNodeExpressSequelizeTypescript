@@ -15,8 +15,17 @@ var app = express();
 app.get('/api', (req, res) => {
      
   
+     
+  models.getPersonModel().findAll({
+    include: [{ model: models.getCountryModel(), as : 'BirthCountry' }],
+    attributes: ['personId', 'userName', 'favoriteNumber']
+  }).then(persons => res.send(persons));
+   
+   return;
+  
  
-  models.getPersonModel().findAll().then(persons => res.send(persons));
+  // specifying attributes, it can exclude the field of the associated column (e.g., belongsTo) 
+  models.getPersonModel().findAll({ attributes:['personId', 'userName', 'favoriteNumber', 'birthCountryId'] }).then(persons => res.send(persons));
    
   return;
   
@@ -45,12 +54,6 @@ app.get('/api', (req, res) => {
   return;   
 
 
-     
-  models.getPersonModel().findAll({
-    include: [{ model: models.getCountryModel(), as : 'BirthCountry' } ]
-  }).then(persons => res.send(persons));
-   
-   return;
             
   
     

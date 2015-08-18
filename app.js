@@ -4,7 +4,13 @@ var Domain = require('./Domain');
 var models = new Domain.Models();
 var app = express();
 app.get('/api', function (req, res) {
-    models.getPersonModel().findAll().then(function (persons) { return res.send(persons); });
+    models.getPersonModel().findAll({
+        include: [{ model: models.getCountryModel(), as: 'BirthCountry' }],
+        attributes: ['personId', 'userName', 'favoriteNumber']
+    }).then(function (persons) { return res.send(persons); });
+    return;
+    // specifying attributes, it can exclude the field of the associated column (e.g., belongsTo) 
+    models.getPersonModel().findAll({ attributes: ['personId', 'userName', 'favoriteNumber', 'birthCountryId'] }).then(function (persons) { return res.send(persons); });
     return;
     models.getPersonModel().find({ where: { personId: 1 }, include: [{ model: models.getCountryModel(), as: 'BirthCountry' }] }).then(function (person) {
         // res.send('Hola ' + person.userName + '<br/>' + (<Domain.ICountry>person['BirthCountry']).countryName);
@@ -18,10 +24,6 @@ app.get('/api', function (req, res) {
             res.send(c);
         });
     });
-    return;
-    models.getPersonModel().findAll({
-        include: [{ model: models.getCountryModel(), as: 'BirthCountry' }]
-    }).then(function (persons) { return res.send(persons); });
     return;
     var newPerson = models.getPersonModel().build({
         personId: 0,
