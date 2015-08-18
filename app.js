@@ -4,29 +4,48 @@ var Domain = require('./Domain');
 var models = new Domain.Models();
 var app = express();
 app.get('/api', function (req, res) {
-    models.getPersonModel().find({ where: { personId: 1 }, include: [{ model: models.getCountryModel(), as: 'BirthCountry' }] }).then(function (person) {
-        res.send("Hola " + person.userName + "<br/>" + person["BirthCountry"].countryName);
-    });
-    return;
-    models.getPersonModel().find({ where: { personId: 1 } }).then(function (person) {
-        person.getBirthCountry().then(function (country) {
-            var c = country;
+    /*
+      
+      models.getPersonModel().findAll().then(persons => res.send(persons));
+       
+      return;
+      
+    
+       
+       models.getPersonModel().find({where: { personId : 1 }, include: [{model: models.getCountryModel(), as : 'BirthCountry' }] }).then(person  => {
+         // res.send('Hola ' + person.userName + '<br/>' + (<Domain.ICountry>person['BirthCountry']).countryName);
+         res.send('Hola ' + person.userName + '<br/>' + person.BirthCountry.countryName);
+       });
+         
+         
+       
+       return;
+       
+      
+         
+       models.getPersonModel().find({where: { personId : 1 }}).then(person => {
+         (<any>person).getBirthCountry().then(country => {
+           var c : Domain.ICountry = country;
             // res.send('hello ' + country.countryName);
             res.send(c);
-        });
-    });
-    return;
+         });
+       });
+      
+         
+      return;
+    
+    */
     models.getPersonModel().findAll({
         include: [{ model: models.getCountryModel(), as: 'BirthCountry' }]
-    }).then(function (person) { return res.send(person); });
-    // models.getPerson().find({where: { personId : 1 }}).then(person => res.send(person));
+    }).then(function (persons) { return res.send(persons); });
+    return;
     var newPerson = models.getPersonModel().build({
         personId: 0,
         userName: 'Kel ' + uuid.v4(),
         favoriteNumber: 76
     });
     var np = newPerson;
-    np.setBirthCountry(1);
+    np.setBirthCountry(2);
     np.save();
 });
 // Serving static files

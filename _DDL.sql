@@ -6,16 +6,16 @@ drop table country;
 create table country
 (
 	country_id serial primary key,
-	country_name text unique
+	country_name text unique not null
 );
 
 
 create table person
 (
 	person_id serial primary key,
-	username text unique,
-	favorite_number int,
-	birth_country_id int,
+	username text unique not null,
+	favorite_number int not null,
+	birth_country_id int not null,
 	constraint fk_person__country foreign key(birth_country_id) references country(country_id)
 );
 

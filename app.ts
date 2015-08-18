@@ -14,15 +14,24 @@ var app = express();
 
 app.get('/api', (req, res) => {
      
+/*  
+  
+  models.getPersonModel().findAll().then(persons => res.send(persons));
+   
+  return;
+  
 
+   
    models.getPersonModel().find({where: { personId : 1 }, include: [{model: models.getCountryModel(), as : 'BirthCountry' }] }).then(person  => {               
-     res.send("Hola " + person.userName + "<br/>" + (<Domain.ICountry>person["BirthCountry"]).countryName);
+     // res.send('Hola ' + person.userName + '<br/>' + (<Domain.ICountry>person['BirthCountry']).countryName);
+     res.send('Hola ' + person.userName + '<br/>' + person.BirthCountry.countryName);
    });  
      
      
    
    return;  
-     
+   
+  
      
    models.getPersonModel().find({where: { personId : 1 }}).then(person => {     
      (<any>person).getBirthCountry().then(country => {
@@ -31,26 +40,28 @@ app.get('/api', (req, res) => {
         res.send(c);
      });
    });
-   
+  
      
   return;   
+
+*/
      
   models.getPersonModel().findAll({
     include: [{ model: models.getCountryModel(), as : 'BirthCountry' } ]
-  }).then(person => res.send(person));
+  }).then(persons => res.send(persons));
    
-   
+   return;
             
-  // models.getPerson().find({where: { personId : 1 }}).then(person => res.send(person));
+  
     
   var newPerson = models.getPersonModel().build({
     personId : 0,
     userName : 'Kel ' + uuid.v4(),
-    favoriteNumber : 76
+    favoriteNumber : 76      
   });
   
   var np : any = newPerson;
-  np.setBirthCountry(1);
+  np.setBirthCountry(2);    
   np.save();
   
 

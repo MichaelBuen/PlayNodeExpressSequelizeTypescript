@@ -10,7 +10,7 @@ var Models = (function () {
         this._person = sequelize.define('person', {
             personId: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true, field: 'person_id' },
             userName: { type: Sequelize.STRING, field: 'username' },
-            favoriteNumber: { type: Sequelize.INTEGER, field: 'favorite_number' },
+            favoriteNumber: { type: Sequelize.INTEGER, field: 'favorite_number' }
         }, {
             tableName: 'person'
         });
