@@ -53,12 +53,20 @@ var Models = (function () {
         });
         this._person.belongsTo(this._country, { as: 'BirthCountry', foreignKey: 'birth_country_id', constraints: true });
     }
-    Models.prototype.getPersonModel = function () {
-        return this._person;
-    };
-    Models.prototype.getCountryModel = function () {
-        return this._country;
-    };
+    Object.defineProperty(Models.prototype, "personModel", {
+        get: function () {
+            return this._person;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Models.prototype, "countryModel", {
+        get: function () {
+            return this._country;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Models;
 })();
 exports.Models = Models;

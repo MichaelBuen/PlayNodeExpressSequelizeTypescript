@@ -97,12 +97,15 @@ export class Models {
     
     
     
-    public getPersonModel() : Sequelize.Model<IPerson,IPerson> {
+    
+    public get personModel() :  Sequelize.Model<IPerson,IPerson> {
         return this._person;
     }
     
-    public getCountryModel() : Sequelize.Model<ICountry,ICountry> {
+    
+    public get countryModel() : Sequelize.Model<ICountry,ICountry> {
         return this._country;
     }
+    
 } 
 
