@@ -3,19 +3,19 @@ var Domain = require('./Domain');
 module.exports = function (app) {
     app.get('/api', function (req, res) {
         var models = new Domain.Models();
-        models.getPersonModel().findAll({
-            include: [{ model: models.getCountryModel(), as: 'BirthCountry', attributes: ['countryName'] }],
-            attributes: ['personId', 'userName', 'favoriteNumber']
-        }).then(function (persons) { return res.send(persons); });
-        return;
         var px = new Domain.Person();
         px.personId = 0;
         px.userName = 'Kel ' + uuid.v4();
         px.setRandomFavoriteNumber();
-        px.birthCountryId = -2; // this will throw an exception      
+        px.birthCountryId = 2; // reverted to plain property. sequelize doesn't support reading defineProperty yet, it doesn't support getter and setter on the prototype object      
         var newPerson = models.getPersonModel().build(px);
         var np = newPerson;
         np.save();
+        return;
+        models.getPersonModel().findAll({
+            include: [{ model: models.getCountryModel(), as: 'BirthCountry', attributes: ['countryName'] }],
+            attributes: ['personId', 'userName', 'favoriteNumber']
+        }).then(function (persons) { return res.send(persons); });
         return;
         /*
         res.send('Yay');

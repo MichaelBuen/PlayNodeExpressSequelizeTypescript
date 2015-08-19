@@ -31,10 +31,10 @@ export class Person implements IPerson
 {
     personId : number;
     userName : string;
-    favoriteNumber: number;
+    favoriteNumber: number;    
+    birthCountryId : number;
     
-    private _birthCountryId : number;
-    
+    /* Sequelize cannot read Object.defineProperty
     public get birthCountryId() : number {
         return this._birthCountryId;
     }
@@ -43,7 +43,7 @@ export class Person implements IPerson
         if (value <= 0)
             throw new InvalidArgumentException("Value cannot be negative");                        
         this._birthCountryId = value;
-    }
+    }*/
 
 
     

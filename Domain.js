@@ -13,18 +13,16 @@ exports.InvalidArgumentException = InvalidArgumentException;
 var Person = (function () {
     function Person() {
     }
-    Object.defineProperty(Person.prototype, "birthCountryId", {
-        get: function () {
-            return this._birthCountryId;
-        },
-        set: function (value) {
-            if (value <= 0)
-                throw new InvalidArgumentException("Value cannot be negative");
-            this._birthCountryId = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
+    /* Sequelize cannot read Object.defineProperty
+    public get birthCountryId() : number {
+        return this._birthCountryId;
+    }
+    
+    public set birthCountryId(value: number)  {
+        if (value <= 0)
+            throw new InvalidArgumentException("Value cannot be negative");
+        this._birthCountryId = value;
+    }*/
     Person.prototype.setRandomFavoriteNumber = function () {
         this.favoriteNumber = Math.ceil(Math.random() * 100);
     };

@@ -16,14 +16,7 @@ export = function(app : express.Express) : void {
 
         
          
-        
-        models.getPersonModel().findAll({
-            include: [{ model: models.getCountryModel(), as : 'BirthCountry', attributes: ['countryName'] }],
-            attributes: ['personId', 'userName', 'favoriteNumber']
-        }).then(persons => res.send(persons));
-        
-        return;
-        
+
         
 
                 
@@ -31,7 +24,7 @@ export = function(app : express.Express) : void {
         px.personId = 0;
         px.userName = 'Kel ' + uuid.v4();        
         px.setRandomFavoriteNumber();
-        px.birthCountryId = -2;  // this will throw an exception      
+        px.birthCountryId = 2;  // reverted to plain property. sequelize doesn't support reading defineProperty yet, it doesn't support getter and setter on the prototype object      
                                 
         var newPerson = models.getPersonModel().build(px);
                                 
@@ -39,6 +32,16 @@ export = function(app : express.Express) : void {
         np.save();
         
         return;
+        
+        
+                
+        models.getPersonModel().findAll({
+            include: [{ model: models.getCountryModel(), as : 'BirthCountry', attributes: ['countryName'] }],
+            attributes: ['personId', 'userName', 'favoriteNumber']
+        }).then(persons => res.send(persons));
+        
+        return;
+        
 
         
         /*    
