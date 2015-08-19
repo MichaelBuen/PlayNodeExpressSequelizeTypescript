@@ -9,21 +9,44 @@ export = function(app : express.Express) : void {
                         
     app.get('/api', (req, res) => {    
         
+                
+        var models = new Domain.Models();
         
-        var models = new Domain.Models(); 
+        
+
+        
+         
+        
+        models.getPersonModel().findAll({
+            include: [{ model: models.getCountryModel(), as : 'BirthCountry', attributes: ['countryName'] }],
+            attributes: ['personId', 'userName', 'favoriteNumber']
+        }).then(persons => res.send(persons));
+        
+        return;
+        
+        
+
+                
+        var px = new Domain.Person();        
+        px.personId = 0;
+        px.userName = 'Kel ' + uuid.v4();        
+        px.setRandomFavoriteNumber();
+        px.birthCountryId = -2;  // this will throw an exception      
+                                
+        var newPerson = models.getPersonModel().build(px);
+                                
+        var np : any = newPerson;
+        np.save();
+        
+        return;
+
         
         /*    
         res.send('Yay');
         return;
         */
             
-        models.getPersonModel().findAll({
-            include: [{ model: models.getCountryModel(), as : 'BirthCountry' }],
-            attributes: ['personId', 'userName', 'favoriteNumber']
-        }).then(persons => res.send(persons));
-        
-        return;
-        
+
         
         // specifying attributes, it can exclude the field of the associated column (e.g., belongsTo) 
         models.getPersonModel().findAll({ attributes:['personId', 'userName', 'favoriteNumber', 'birthCountryId'] }).then(persons => res.send(persons));
@@ -54,23 +77,10 @@ export = function(app : express.Express) : void {
             
         return;   
         
+                                      
+          
         
-                    
-        
-            
-        var newPerson = models.getPersonModel().build({
-            personId : 0,
-            userName : 'Kel ' + uuid.v4(),
-            favoriteNumber : 84,
-            birthCountryId: 2      
-        });
-        
-        var np : any = newPerson;
-            
-        np.save();
-        
-        
-        });    
+    });    
         
 }
 

@@ -1,5 +1,8 @@
 var express = require('express');
 var Api = require('./Api');
+var events = require('events');
+var emitter = new events.EventEmitter();
+// Serving static files
 var app = express();
 Api(app);
 // Serving static files

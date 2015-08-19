@@ -3,15 +3,24 @@ var Domain = require('./Domain');
 module.exports = function (app) {
     app.get('/api', function (req, res) {
         var models = new Domain.Models();
+        models.getPersonModel().findAll({
+            include: [{ model: models.getCountryModel(), as: 'BirthCountry', attributes: ['countryName'] }],
+            attributes: ['personId', 'userName', 'favoriteNumber']
+        }).then(function (persons) { return res.send(persons); });
+        return;
+        var px = new Domain.Person();
+        px.personId = 0;
+        px.userName = 'Kel ' + uuid.v4();
+        px.setRandomFavoriteNumber();
+        px.birthCountryId = -2; // this will throw an exception      
+        var newPerson = models.getPersonModel().build(px);
+        var np = newPerson;
+        np.save();
+        return;
         /*
         res.send('Yay');
         return;
         */
-        models.getPersonModel().findAll({
-            include: [{ model: models.getCountryModel(), as: 'BirthCountry' }],
-            attributes: ['personId', 'userName', 'favoriteNumber']
-        }).then(function (persons) { return res.send(persons); });
-        return;
         // specifying attributes, it can exclude the field of the associated column (e.g., belongsTo) 
         models.getPersonModel().findAll({ attributes: ['personId', 'userName', 'favoriteNumber', 'birthCountryId'] }).then(function (persons) { return res.send(persons); });
         return;
@@ -28,14 +37,6 @@ module.exports = function (app) {
             });
         });
         return;
-        var newPerson = models.getPersonModel().build({
-            personId: 0,
-            userName: 'Kel ' + uuid.v4(),
-            favoriteNumber: 84,
-            birthCountryId: 2
-        });
-        var np = newPerson;
-        np.save();
     });
 };
 //# sourceMappingURL=Api.js.map

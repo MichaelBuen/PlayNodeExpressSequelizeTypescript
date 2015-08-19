@@ -2,13 +2,54 @@ import Sequelize = require('sequelize');
 
 
 
+
+export class InvalidArgumentException implements Error
+{
+    public name = "InvalidArgumentException";
+    
+    constructor(public message: string) {                
+    }
+    
+    toString() : string {
+        return this.name + ': ' + this.message; 
+    }
+} 
+
+
 export interface IPerson
 {
     personId : number;
     userName : string;
     favoriteNumber: number;
     birthCountryId : number;    
-    BirthCountry? : ICountry; // enable autocomplete
+                
+    BirthCountry? : ICountry; // enable autocomplete   
+}
+
+
+export class Person implements IPerson
+{
+    personId : number;
+    userName : string;
+    favoriteNumber: number;
+    
+    private _birthCountryId : number;
+    
+    public get birthCountryId() : number {
+        return this._birthCountryId;
+    }
+    
+    public set birthCountryId(value: number)  {
+        if (value <= 0)
+            throw new InvalidArgumentException("Value cannot be negative");                        
+        this._birthCountryId = value;
+    }
+
+
+    
+    public setRandomFavoriteNumber() : void {
+        this.favoriteNumber = Math.ceil(Math.random() * 100);
+    }
 }
 
 
@@ -33,7 +74,7 @@ export class Models {
             }
         });
         
-        this._person = sequelize.define<IPerson, IPerson>('person', {
+        this._person = sequelize.define<Person, Person>('person', {
             personId : { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true, field: 'person_id' },
             userName : { type: Sequelize.STRING, field: 'username' },
             favoriteNumber : { type: Sequelize.INTEGER, field: 'favorite_number' },

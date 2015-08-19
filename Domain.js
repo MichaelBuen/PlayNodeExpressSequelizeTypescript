@@ -1,4 +1,36 @@
 var Sequelize = require('sequelize');
+var InvalidArgumentException = (function () {
+    function InvalidArgumentException(message) {
+        this.message = message;
+        this.name = "InvalidArgumentException";
+    }
+    InvalidArgumentException.prototype.toString = function () {
+        return this.name + ': ' + this.message;
+    };
+    return InvalidArgumentException;
+})();
+exports.InvalidArgumentException = InvalidArgumentException;
+var Person = (function () {
+    function Person() {
+    }
+    Object.defineProperty(Person.prototype, "birthCountryId", {
+        get: function () {
+            return this._birthCountryId;
+        },
+        set: function (value) {
+            if (value <= 0)
+                throw new InvalidArgumentException("Value cannot be negative");
+            this._birthCountryId = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Person.prototype.setRandomFavoriteNumber = function () {
+        this.favoriteNumber = Math.ceil(Math.random() * 100);
+    };
+    return Person;
+})();
+exports.Person = Person;
 var Models = (function () {
     function Models() {
         var sequelize = new Sequelize('commerce', 'postgres', 'opensesame93', {
