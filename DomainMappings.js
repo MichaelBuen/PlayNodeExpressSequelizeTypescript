@@ -1,34 +1,6 @@
 var Sequelize = require('sequelize');
-var InvalidArgumentException = (function () {
-    function InvalidArgumentException(message) {
-        this.message = message;
-        this.name = "InvalidArgumentException";
-    }
-    InvalidArgumentException.prototype.toString = function () {
-        return this.name + ': ' + this.message;
-    };
-    return InvalidArgumentException;
-})();
-exports.InvalidArgumentException = InvalidArgumentException;
-var Person = (function () {
-    function Person() {
-    }
-    /* Sequelize cannot read Object.defineProperty
-    public get birthCountryId() : number {
-        return this._birthCountryId;
-    }
-    
-    public set birthCountryId(value: number)  {
-        if (value <= 0)
-            throw new InvalidArgumentException("Value cannot be negative");
-        this._birthCountryId = value;
-    }*/
-    Person.prototype.setRandomFavoriteNumber = function () {
-        this.favoriteNumber = Math.ceil(Math.random() * 100);
-    };
-    return Person;
-})();
-exports.Person = Person;
+/// <reference path='./domains/all'/>
+var domains = require('./domains/all.js');
 var Models = (function () {
     function Models() {
         var sequelize = new Sequelize('commerce', 'postgres', 'opensesame93', {
@@ -40,6 +12,7 @@ var Models = (function () {
         this._person = sequelize.define('person', {
             personId: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true, field: 'person_id' },
             userName: { type: Sequelize.STRING, field: 'username' },
+            aboutMe: { type: Sequelize.STRING, field: 'about_me' },
             favoriteNumber: { type: Sequelize.INTEGER, field: 'favorite_number' },
             birthCountryId: { type: Sequelize.INTEGER, field: 'birth_country_id' }
         }, {
@@ -47,7 +20,8 @@ var Models = (function () {
         });
         this._country = sequelize.define('country', {
             countryId: { type: Sequelize.INTEGER, autoincrement: true, primaryKey: true, field: 'country_id' },
-            countryName: { type: Sequelize.STRING, field: 'country_name' }
+            countryName: { type: Sequelize.STRING, field: 'country_name' },
+            population: { type: Sequelize.INTEGER, field: 'population' }
         }, {
             tableName: 'country'
         });
@@ -70,4 +44,4 @@ var Models = (function () {
     return Models;
 })();
 exports.Models = Models;
-//# sourceMappingURL=Domain.js.map
+//# sourceMappingURL=DomainMappings.js.map

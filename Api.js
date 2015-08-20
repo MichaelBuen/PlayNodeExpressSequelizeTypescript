@@ -1,15 +1,10 @@
 var uuid = require('node-uuid');
-var Domain = require('./Domain');
+var dm = require('./DomainMappings');
+var domain = require('./domains/all.js').Domain; // .Domain is typeless. To make strongly-typed alias for it, use typeof. 
 module.exports = function (app) {
     app.get('/api', function (req, res) {
-        var models = new Domain.Models();
-        models.countryModel = null;
-        models.personModel.findAll({
-            include: [{ model: models.countryModel, as: 'BirthCountry', attributes: ['countryName'] }],
-            attributes: ['personId', 'userName', 'favoriteNumber']
-        }).then(function (persons) { return res.send(persons); });
-        return;
-        var px = new Domain.Person();
+        var models = new dm.Models();
+        var px = new domain.Person();
         px.personId = 0;
         px.userName = 'Kel ' + uuid.v4();
         px.setRandomFavoriteNumber();
@@ -17,6 +12,11 @@ module.exports = function (app) {
         var newPerson = models.personModel.build(px);
         var np = newPerson;
         np.save();
+        return;
+        models.personModel.findAll({
+            include: [{ model: models.countryModel, as: 'BirthCountry', attributes: ['countryName', 'population'] }],
+            attributes: ['personId', 'userName', 'favoriteNumber']
+        }).then(function (persons) { return res.send(persons); });
         return;
         /*
         res.send('Yay');
@@ -32,6 +32,7 @@ module.exports = function (app) {
         return;
         models.personModel.find({ where: { personId: 1 } }).then(function (person) {
             person.getBirthCountry().then(function (country) {
+                // var c : domains.ICountry = country;            
                 var c = country;
                 // res.send('hello ' + country.countryName);
                 res.send(c);

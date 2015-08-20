@@ -2,37 +2,44 @@ import express = require('express');
 
 import uuid = require('node-uuid');
 
-import Domain = require('./Domain');
+import dm = require('./DomainMappings');
+
+var domain : typeof Domain = require('./domains/all.js').Domain; // .Domain is typeless. To make strongly-typed alias for it, use typeof. 
 
 
 export = function(app : express.Express) : void {
+        
                         
-    app.get('/api', (req, res) => {    
+                        
+    app.get('/api', (req, res) => {     
+                                    
+        var models = new dm.Models();
         
-                
-        var models = new Domain.Models();
-
-        models.personModel.findAll({
-            include: [{ model: models.countryModel, as : 'BirthCountry', attributes: ['countryName'] }],
-            attributes: ['personId', 'userName', 'favoriteNumber']
-        }).then(persons => res.send(persons));
         
-        return;
         
-
-                
-        var px = new Domain.Person();        
+        var px = new domain.Person();                
         px.personId = 0;
         px.userName = 'Kel ' + uuid.v4();        
         px.setRandomFavoriteNumber();
         px.birthCountryId = 2;  // reverted to plain property. sequelize doesn't support reading defineProperty yet, it doesn't support getter and setter on the prototype object      
-                                
+                                        
         var newPerson = models.personModel.build(px);
                                 
         var np : any = newPerson;
         np.save();
         
         return;
+
+   
+               
+
+        models.personModel.findAll({
+            include: [{ model: models.countryModel, as : 'BirthCountry', attributes: ['countryName', 'population'] }],
+            attributes: ['personId', 'userName', 'favoriteNumber']
+        }).then(persons => res.send(persons));
+        
+        return;
+        
 
 
         
@@ -63,6 +70,7 @@ export = function(app : express.Express) : void {
             
         models.personModel.find({where: { personId : 1 }}).then(person => {     
             (<any>person).getBirthCountry().then(country => {
+            // var c : domains.ICountry = country;            
             var c : Domain.ICountry = country;
                 // res.send('hello ' + country.countryName);
                 res.send(c);
