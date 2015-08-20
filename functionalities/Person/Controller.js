@@ -1,4 +1,3 @@
-/// <reference path='../../typings/angularjs/angular.d.ts'/>
 var Controller = (function () {
     function Controller() {
         this.name = 'Linus T';

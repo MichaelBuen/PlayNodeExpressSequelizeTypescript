@@ -1,7 +1,6 @@
 import Sequelize = require('sequelize');
 
-/// <reference path='./domains/all'/>
-var domains = require('./domains/all.js');
+// var domain : typeof Domain = require('./domains/all.js').Domain; // .Domain is typeless. To make strongly-typed alias for it, use typeof.
 
     
 export class Models {
@@ -11,6 +10,9 @@ export class Models {
     private _country : Sequelize.Model<Domain.ICountry, Domain.ICountry>;
 
     constructor() {
+        
+        
+        
         
         var sequelize = new Sequelize('commerce', 'postgres', 'opensesame93', {
             dialect: 'postgres', 

@@ -4,6 +4,11 @@ var domain = require('./domains/all.js').Domain; // .Domain is typeless. To make
 module.exports = function (app) {
     app.get('/api', function (req, res) {
         var models = new dm.Models();
+        models.personModel.findAll({
+            include: [{ model: models.countryModel, as: 'BirthCountry', attributes: ['countryName', 'population'] }],
+            attributes: ['personId', 'userName', 'favoriteNumber']
+        }).then(function (persons) { return res.send(persons); });
+        return;
         var px = new domain.Person();
         px.personId = 0;
         px.userName = 'Kel ' + uuid.v4();
@@ -12,11 +17,6 @@ module.exports = function (app) {
         var newPerson = models.personModel.build(px);
         var np = newPerson;
         np.save();
-        return;
-        models.personModel.findAll({
-            include: [{ model: models.countryModel, as: 'BirthCountry', attributes: ['countryName', 'population'] }],
-            attributes: ['personId', 'userName', 'favoriteNumber']
-        }).then(function (persons) { return res.send(persons); });
         return;
         /*
         res.send('Yay');

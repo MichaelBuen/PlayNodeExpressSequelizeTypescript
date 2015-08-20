@@ -1,7 +1,3 @@
-
-/// <reference path='../../typings/angularjs/angular.d.ts'/>
-
-
 class Controller{
 		
 	name : string = 'Linus T';

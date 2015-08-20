@@ -1,6 +1,5 @@
 var Sequelize = require('sequelize');
-/// <reference path='./domains/all'/>
-var domains = require('./domains/all.js');
+// var domain : typeof Domain = require('./domains/all.js').Domain; // .Domain is typeless. To make strongly-typed alias for it, use typeof.
 var Models = (function () {
     function Models() {
         var sequelize = new Sequelize('commerce', 'postgres', 'opensesame93', {

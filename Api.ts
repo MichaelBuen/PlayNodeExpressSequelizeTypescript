@@ -16,6 +16,17 @@ export = function(app : express.Express) : void {
         var models = new dm.Models();
         
         
+                
+
+        models.personModel.findAll({
+            include: [{ model: models.countryModel, as : 'BirthCountry', attributes: ['countryName', 'population'] }],
+            attributes: ['personId', 'userName', 'favoriteNumber']
+        }).then(persons => res.send(persons));
+        
+        return;
+        
+        
+        
         
         var px = new domain.Person();                
         px.personId = 0;
@@ -31,15 +42,7 @@ export = function(app : express.Express) : void {
         return;
 
    
-               
-
-        models.personModel.findAll({
-            include: [{ model: models.countryModel, as : 'BirthCountry', attributes: ['countryName', 'population'] }],
-            attributes: ['personId', 'userName', 'favoriteNumber']
-        }).then(persons => res.send(persons));
-        
-        return;
-        
+       
 
 
         
