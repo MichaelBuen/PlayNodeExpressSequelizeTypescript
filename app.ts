@@ -28,11 +28,11 @@ Api(app);
 
 app.use('/', express.static(__dirname + '/public', { extensions: ['html'] })); // if entered a url without an extension, attach html
 
-app.use('/angular', express.static(__dirname + '/node_modules/angular'));
+app.use('/angular', express.static( path.join(__dirname,'/node_modules/angular') ));
 
-app.use('/domains', express.static(__dirname + '/domains'));
+app.use('/domains', express.static( path.join(__dirname,'/domains') ));
 
-app.use('/functionalities', express.static(__dirname + '/functionalities', { extensions: ['html'] }));
+app.use('/functionalities', express.static( path.join(__dirname,'/functionalities'), { extensions: ['html'] }));
 
 
 var server = app.listen(3000, function () {
