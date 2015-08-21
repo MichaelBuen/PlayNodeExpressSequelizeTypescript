@@ -1,15 +1,25 @@
 var uuid = require('node-uuid');
 var dm = require('./DomainMappings');
-var domain = require('./domains/all.js').Domain; // .Domain is typeless. To make strongly-typed alias for it, use typeof. 
+var domainCountry = require('./domains/Country.js').DomainCountry; // .DomainCountry is typeless. To make strongly-typed alias for it, use typeof. 
+var domainPerson = require('./domains/Person.js').DomainPerson; // .DomainPerson is typeless too.
 module.exports = function (app) {
     app.get('/api', function (req, res) {
         var models = new dm.Models();
+        models.personModel.find({ where: { personId: 1 } }).then(function (person) {
+            person.getBirthCountry().then(function (country) {
+                // var c : domains.ICountry = country;            
+                var c = country;
+                // res.send('hello ' + country.countryName);
+                res.send(c);
+            });
+        });
+        return;
         models.personModel.findAll({
             include: [{ model: models.countryModel, as: 'BirthCountry', attributes: ['countryName', 'population'] }],
             attributes: ['personId', 'userName', 'favoriteNumber']
         }).then(function (persons) { return res.send(persons); });
         return;
-        var px = new domain.Person();
+        var px = new domainPerson();
         px.personId = 0;
         px.userName = 'Kel ' + uuid.v4();
         px.setRandomFavoriteNumber();
@@ -28,15 +38,6 @@ module.exports = function (app) {
         models.personModel.find({ where: { personId: 1 }, include: [{ model: models.countryModel, as: 'BirthCountry' }] }).then(function (person) {
             // res.send('Hola ' + person.userName + '<br/>' + (<Domain.ICountry>person['BirthCountry']).countryName);
             res.send('Hola ' + person.userName + '<br/>' + person.BirthCountry.countryName);
-        });
-        return;
-        models.personModel.find({ where: { personId: 1 } }).then(function (person) {
-            person.getBirthCountry().then(function (country) {
-                // var c : domains.ICountry = country;            
-                var c = country;
-                // res.send('hello ' + country.countryName);
-                res.send(c);
-            });
         });
         return;
     });

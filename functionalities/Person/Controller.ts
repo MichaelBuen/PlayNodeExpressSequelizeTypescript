@@ -10,7 +10,7 @@ class Controller{
 		
 		{
 			var p = new Domain.Person();									
-			p.userName = 'hello';		 				 						
+			p.userName = 'hello';
 			this.persons.push(p);
 		}
 		

@@ -1,17 +1,5 @@
-// This is an internal module, can be used directly on browser code
 var Domain;
 (function (Domain) {
-    var InvalidArgumentException = (function () {
-        function InvalidArgumentException(message) {
-            this.message = message;
-            this.name = "InvalidArgumentException";
-        }
-        InvalidArgumentException.prototype.toString = function () {
-            return this.name + ': ' + this.message;
-        };
-        return InvalidArgumentException;
-    })();
-    Domain.InvalidArgumentException = InvalidArgumentException;
     var Person = (function () {
         function Person() {
         }
@@ -33,6 +21,6 @@ var Domain;
     Domain.Person = Person;
 })(Domain || (Domain = {}));
 if (typeof exports != 'undefined') {
-    exports.Domain = Domain;
+    exports.DomainPerson = Domain.Person;
 }
-//# sourceMappingURL=all.js.map
+//# sourceMappingURL=Person.js.map

@@ -4,8 +4,8 @@ import uuid = require('node-uuid');
 
 import dm = require('./DomainMappings');
 
-var domain : typeof Domain = require('./domains/all.js').Domain; // .Domain is typeless. To make strongly-typed alias for it, use typeof. 
-
+var domainCountry : typeof Domain.Country = require('./domains/Country.js').DomainCountry; // .DomainCountry is typeless. To make strongly-typed alias for it, use typeof. 
+var domainPerson : typeof Domain.Person = require('./domains/Person.js').DomainPerson; // .DomainPerson is typeless too.
 
 export = function(app : express.Express) : void {
         
@@ -15,7 +15,19 @@ export = function(app : express.Express) : void {
                                     
         var models = new dm.Models();
         
+
+            
+        models.personModel.find({where: { personId : 1 }}).then(person => {     
+            (<any>person).getBirthCountry().then(country => {
+            // var c : domains.ICountry = country;            
+            var c : Domain.ICountry = country;
+                // res.send('hello ' + country.countryName);
+                res.send(c);
+            });
+        });
         
+            
+        return;   
                 
 
         models.personModel.findAll({
@@ -27,8 +39,9 @@ export = function(app : express.Express) : void {
         
         
         
-        
-        var px = new domain.Person();                
+    
+            
+        var px = new domainPerson();                        
         px.personId = 0;
         px.userName = 'Kel ' + uuid.v4();        
         px.setRandomFavoriteNumber();
@@ -40,7 +53,6 @@ export = function(app : express.Express) : void {
         np.save();
         
         return;
-
    
        
 
@@ -70,18 +82,6 @@ export = function(app : express.Express) : void {
         return;  
         
         
-            
-        models.personModel.find({where: { personId : 1 }}).then(person => {     
-            (<any>person).getBirthCountry().then(country => {
-            // var c : domains.ICountry = country;            
-            var c : Domain.ICountry = country;
-                // res.send('hello ' + country.countryName);
-                res.send(c);
-            });
-        });
-        
-            
-        return;   
         
                                       
           
