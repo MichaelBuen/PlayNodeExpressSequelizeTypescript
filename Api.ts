@@ -4,8 +4,11 @@ import uuid = require('node-uuid');
 
 import dm = require('./DomainMappings');
 
-var domainCountry : typeof Domain.Country = require('./domains/Country.js').DomainCountry; // .DomainCountry is typeless. To make strongly-typed alias for it, use typeof. 
-var domainPerson : typeof Domain.Person = require('./domains/Person.js').DomainPerson; // .DomainPerson is typeless too.
+
+class ExternalizedDomain {   
+     static Country : typeof Domain.Country = require('./domains/Country.js').DomainCountry; // .DomainCountry is typeless. To make strongly-typed alias for it, use typeof. 
+     static Person : typeof Domain.Person = require('./domains/Person.js').DomainPerson; // .DomainPerson is typeless too.
+}
 
 export = function(app : express.Express) : void {
         
@@ -14,6 +17,22 @@ export = function(app : express.Express) : void {
     app.get('/api', (req, res) => {     
                                     
         var models = new dm.Models();
+
+       
+        var px = new ExternalizedDomain.Person();                        
+        px.personId = 0;
+        px.userName = 'Kel ' + uuid.v4();        
+        px.setRandomFavoriteNumber();
+        px.birthCountryId = 2;  // reverted to plain property. sequelize doesn't support reading defineProperty yet, it doesn't support getter and setter on the prototype object      
+                                        
+        var newPerson = models.personModel.build(px);
+                                
+        var np : any = newPerson;
+        np.save();
+        
+        return;
+   
+       
         
 
             
@@ -40,21 +59,7 @@ export = function(app : express.Express) : void {
         
         
     
-            
-        var px = new domainPerson();                        
-        px.personId = 0;
-        px.userName = 'Kel ' + uuid.v4();        
-        px.setRandomFavoriteNumber();
-        px.birthCountryId = 2;  // reverted to plain property. sequelize doesn't support reading defineProperty yet, it doesn't support getter and setter on the prototype object      
-                                        
-        var newPerson = models.personModel.build(px);
-                                
-        var np : any = newPerson;
-        np.save();
-        
-        return;
-   
-       
+     
 
 
         
